@@ -9,6 +9,7 @@ import socketHandler from "./socket/socketHandler.js";
 import cookieParser from "cookie-parser";
 import route from "./routes/routeMessage.js";
 import authRouter from "./routes/authRoute.js";
+import userRouter from "./routes/userRoutes.js";
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -29,6 +30,7 @@ const io = new Server(server, {
 socketHandler(io);
 app.use("/chats", route);
 app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
 const PORT = process.env.PORT || 3000;
 
 server.listen(PORT, () => {
