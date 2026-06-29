@@ -5,7 +5,8 @@ import Login from "./pages/Login";
 import EmailVerify from "./pages/EmailVerify";
 import ResetPassword from "./pages/ResetPassword";
 import ChatPage from "./pages/ChatPage";
-
+import FriendsPage from "./pages/FriendsPage";
+import PrivateChatPage from "./pages/PrivateChatPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -24,6 +25,22 @@ function App() {
           element={
             <ProtectedRoute>
               <ChatPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/friends"
+          element={
+            <ProtectedRoute>
+              <FriendsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/private-chat/:friendId"
+          element={
+            <ProtectedRoute>
+              <PrivateChatPage />
             </ProtectedRoute>
           }
         />

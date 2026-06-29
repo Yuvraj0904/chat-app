@@ -11,6 +11,7 @@ import route from "./routes/routeMessage.js";
 import authRouter from "./routes/authRoute.js";
 import friendRouter from "./routes/friendRoute.js";
 import userRouter from "./routes/userRoutes.js";
+import privateChatRouter from "./routes/privateChatRoute.js";
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -33,6 +34,7 @@ app.use("/chats", route);
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/friends", friendRouter);
+app.use("/api/private-chat", privateChatRouter);
 const PORT = process.env.PORT || 3000;
 
 server.listen(PORT, () => {

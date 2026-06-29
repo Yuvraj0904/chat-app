@@ -5,7 +5,7 @@ import ChatHeader from "../components/ChatHeader";
 import MessageInput from "../components/MessageInput";
 import MessageList from "../components/MessageList";
 import OnlineUsers from "../components/OnlineUsers";
-
+import AllUsers from "../components/AllUsers";
 import api from "../services/api";
 import { socket } from "../services/socket";
 
@@ -24,7 +24,7 @@ const ChatPage = () => {
   const [messages, setMessages] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [typingUser, setTypingUser] = useState("");
-
+  const [allUsers, setAllUsers] = useState([]);
   // Redirect if not logged in
   useEffect(() => {
     if (!isLoggedin) {
@@ -131,7 +131,20 @@ const ChatPage = () => {
       socket.off("user_stop_typing");
     };
   }, []);
+  const fetchAllUsers = async () => {
+    try {
+      const response = await api.get("/user/all-users");
 
+      if (response.data.success) {
+        setAllUsers(response.data.users);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchAllUsers();
+  }, []);
   if (!isLoggedin) return null;
 
   return (
@@ -142,6 +155,11 @@ const ChatPage = () => {
 
         {/* Online Users */}
         <OnlineUsers onlineUsers={onlineUsers} />
+
+        <AllUsers
+          users={allUsers}
+          backendUrl={import.meta.env.VITE_BACKEND_URL}
+        />
 
         {/* Messages */}
         <MessageList

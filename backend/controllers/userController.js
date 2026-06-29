@@ -11,6 +11,7 @@ export const getUserData = async (req, res) => {
     return res.json({
       success: true,
       userData: {
+        _id: user._id,
         name: user.name,
         isAccountVerified: user.isAccountVerified,
       },
@@ -19,4 +20,20 @@ export const getUserData = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
-export default getUserData;
+export const getAllUsers=async(req,res)=>{
+  try {
+    const currentUserId = req.userId;
+    const users = await User.find({
+      _id: { $ne: currentUserId },
+    }).select("-password");
+    if(!user){
+       return res.json({ success: false, message: "users not found" });
+    }
+       return res.json({
+         success: true,
+         users,
+       });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+}

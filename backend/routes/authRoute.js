@@ -10,7 +10,7 @@ import {
   verifyEmail,
 } from "../controllers/authController.js";
 import userAuth from "../middleware/userAuth.js";
-import getUserData from "../controllers/userController.js";
+import {getUserData} from "../controllers/userController.js";
 const authRouter = express.Router();
 
 authRouter.post("/register", register);
