@@ -84,6 +84,7 @@ const Dashboard = () => {
         {activeTab === "private" && selectedFriend && (
           <PrivateChatPage friend={selectedFriend} onlineUsers={onlineUsers} />
         )}
+        
       </div>
     </div>
   );

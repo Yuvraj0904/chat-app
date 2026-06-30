@@ -22,12 +22,22 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
 
       navigate("/login");
     } catch (error) {
-      console.log(error);
+     res.json({
+       success: false,
+       message: error.message,
+     });
     }
   };
 
   return (
     <div className="w-80 h-screen bg-[#8f9580] text-white flex flex-col border-r border-b-blue-950">
+      {/* Home Button */}
+      <button
+        onClick={() => navigate("/")}
+        className="w-full p-4 rounded-2xl bg-linear-to-r from-violet-600 to-fuchsia-600"
+      >
+        🏠 Home
+      </button>
       {/* Profile */}
 
       <div className="p-8 border-b border-slate-800">

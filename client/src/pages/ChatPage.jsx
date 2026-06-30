@@ -51,7 +51,10 @@ const ChatPage = () => {
 
       setMessages(response.data.messages);
     } catch (error) {
-      console.log(error);
+     res.json({
+       success: false,
+       message: error.message,
+     });
     }
   };
 
@@ -141,7 +144,10 @@ const ChatPage = () => {
         setAllUsers(response.data.users);
       }
     } catch (error) {
-      console.log(error);
+      res.json({
+        success: false,
+        message: error.message,
+      });
     }
   };
   useEffect(() => {

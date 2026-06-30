@@ -30,7 +30,10 @@ const PrivateChatPage = ({ friend, onlineUsers }) => {
         setMessages(data.messages);
       }
     } catch (error) {
-      console.log(error);
+      res.json({
+        success: false,
+        message: error.message,
+      });
     }
   };
 
