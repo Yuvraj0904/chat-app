@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 const FriendsPage = ({
   setSelectedFriend,
   setActiveTab,
+  setUnreadMessages,
+  unreadMessages,
+  onlineUsers,
   onlyRequests = false,
 }) => {
   const navigate = useNavigate();
@@ -136,14 +139,45 @@ const FriendsPage = ({
               <p>No friends yet</p>
             ) : (
               friends.map((friend) => (
-                <div key={friend._id} className="border-b py-3">
-                  <p className="font-medium">{friend.name}</p>
+                <div
+                  key={friend._id}
+                  className="border-b py-3 flex justify-between items-center"
+                >
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={`w-3 h-3 rounded-full ${
+                            onlineUsers?.includes(friend._id)
+                              ? "bg-green-500"
+                              : "bg-gray-400"
+                          }`}
+                        ></span>
 
-                  <p className="text-sm text-gray-500">{friend.email}</p>
+                        <p className="font-medium">{friend.name}</p>
+
+                        {unreadMessages?.[friend._id] > 0 && (
+                          <span className="bg-red-500 text-white rounded-full px-2 text-xs">
+                            {unreadMessages[friend._id]}
+                          </span>
+                        )}
+                      </div>
+
+                    
+                    </div>
+
+                    <p className="text-sm text-gray-500">{friend.email}</p>
+                  </div>
+
                   <button
                     onClick={() => {
-                      setSelectedFriend(friend._id);
+                      setSelectedFriend(friend);
                       setActiveTab("private");
+
+                      setUnreadMessages((prev) => ({
+                        ...prev,
+                        [friend._id]: 0,
+                      }));
                     }}
                     className="bg-blue-500 text-white px-3 py-1 rounded"
                   >

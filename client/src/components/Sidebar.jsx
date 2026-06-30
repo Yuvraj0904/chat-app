@@ -46,14 +46,7 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
       >
         👥 Friends
       </button>
-      <button
-        onClick={() => setActiveTab("requests")}
-        className={`w-full text-left p-3 rounded mb-2 ${
-          activeTab === "requests" ? "bg-blue-500" : "hover:bg-slate-700"
-        }`}
-      >
-        🔔 Friend Requests
-      </button>
+     
       <button
         onClick={logout}
         className="w-full text-left p-3 rounded mt-10 bg-red-500 hover:bg-red-600"

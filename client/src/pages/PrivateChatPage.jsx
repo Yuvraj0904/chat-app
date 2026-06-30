@@ -3,7 +3,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { AppContext } from "../context/AppContext";
 import { socket } from "../services/socket";
-const PrivateChatPage = ({ friendId }) => {
+const PrivateChatPage = ({ friend, onlineUsers }) => {
+  const friendId = friend._id;
   const { backendUrl, userData } = useContext(AppContext);
 
   const [messages, setMessages] = useState([]);
@@ -72,7 +73,21 @@ const PrivateChatPage = ({ friendId }) => {
         <div className="p-4 border-b">
           <h1 className="text-2xl font-bold">Private Chat</h1>
         </div>
+        <div className="bg-blue-600 text-white p-4 flex items-center gap-3 rounded-t-xl">
+          <span
+            className={`w-3 h-3 rounded-full ${
+              onlineUsers?.includes(friend._id) ? "bg-green-400" : "bg-gray-300"
+            }`}
+          ></span>
 
+          <div>
+            <h2 className="text-xl font-semibold">{friend.name}</h2>
+
+            <p className="text-sm">
+              {onlineUsers?.includes(friend._id) ? "Online" : "Offline"}
+            </p>
+          </div>
+        </div>
         <div className="flex-1 overflow-y-auto p-4">
           {messages.map((msg, index) => (
             <div

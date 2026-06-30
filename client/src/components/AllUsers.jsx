@@ -1,7 +1,11 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-
+import { socket } from "../services/socket";
+import { AppContext } from "../context/AppContext";
+import { useContext } from "react";
 const AllUsers = ({ users, backendUrl }) => {
+  const { userData } = useContext(AppContext);
+
   const sendFriendRequest = async (userId) => {
     try {
       const { data } = await axios.post(
@@ -10,11 +14,16 @@ const AllUsers = ({ users, backendUrl }) => {
         { withCredentials: true },
       );
 
-      if (data.success) {
-        toast.success(data.message);
-      } else {
-        toast.error(data.message);
-      }
+    if (data.success) {
+      toast.success(data.message);
+
+      socket.emit("send_friend_notification", {
+        receiverId: userId,
+        senderName: userData.name,
+      });
+    } else {
+      toast.error(data.message);
+    }
     } catch (error) {
       toast.error(error.message);
     }
