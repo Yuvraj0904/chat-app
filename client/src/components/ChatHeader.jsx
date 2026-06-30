@@ -32,23 +32,31 @@ const ChatHeader = ({ username }) => {
   };
 
   return (
-    <div className="bg-blue-500 text-white p-4 rounded-t-xl flex justify-between items-center">
-      <h1 className="text-2xl font-bold">Welcome, {username}</h1>
+    <div className="bg-[#111827] border-b border-slate-700 p-5 flex justify-between items-center">
+      {/* Left Side */}
+      <div>
+        <h1 className="text-2xl font-bold text-white">Global Chat</h1>
 
-      <div className="flex gap-3">
-        <button
-          onClick={() => navigate("/")}
-          className="bg-white text-blue-500 px-4 py-2 rounded-lg hover:bg-gray-100"
-        >
-          Home
-        </button>
+        <p className="text-slate-400 text-sm">
+          Connect and chat with everyone in real time
+        </p>
+      </div>
 
-        <button
-          onClick={logout}
-          className="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600"
-        >
-          Logout
-        </button>
+      {/* Right Side */}
+      <div className="flex items-center gap-4">
+        <div className="hidden md:block text-right">
+          <p className="text-white font-medium">{username}</p>
+
+          <div className="flex items-center justify-end gap-2">
+            <span className="w-2 h-2 rounded-full bg-green-500"></span>
+
+            <p className="text-slate-400 text-sm">Online</p>
+          </div>
+        </div>
+
+        <div className="w-12 h-12 rounded-2xl bg-linear-to-r from-violet-500 to-fuchsia-500 flex items-center justify-center text-white font-bold text-xl shadow-lg">
+          {username?.charAt(0).toUpperCase()}
+        </div>
       </div>
     </div>
   );

@@ -6,12 +6,13 @@ import { useNavigate } from "react-router-dom";
 const Sidebar = ({ activeTab, setActiveTab }) => {
   const navigate = useNavigate();
 
-  const { backendUrl, setIsLoggedin, setUserData } = useContext(AppContext);
+  const { backendUrl, setIsLoggedin, setUserData, userData } =
+    useContext(AppContext);
 
   const logout = async () => {
     try {
       await axios.post(
-        backendUrl + "/api/auth/logout",
+        `${backendUrl}/api/auth/logout`,
         {},
         { withCredentials: true },
       );
@@ -26,33 +27,59 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
   };
 
   return (
-    <div className="w-64 bg-slate-900 text-white p-5">
-      <h1 className="text-2xl font-bold mb-8">Chat App</h1>
+    <div className="w-80 h-screen bg-[#8f9580] text-white flex flex-col border-r border-b-blue-950">
+      {/* Profile */}
 
-      <button
-        onClick={() => setActiveTab("global")}
-        className={`w-full text-left p-3 rounded mb-2 ${
-          activeTab === "global" ? "bg-blue-500" : "hover:bg-slate-700"
-        }`}
-      >
-        🌍 Global Chat
-      </button>
+      <div className="p-8 border-b border-slate-800">
+        <div className="flex items-center gap-4">
+          <div className="w-16 h-16 rounded-2xl bg-linear-to-r from-fuchsia-100 to-fuchsia-500 flex items-center justify-center text-3xl font-bold shadow-lg">
+            {userData?.name?.charAt(0)}
+          </div>
 
-      <button
-        onClick={() => setActiveTab("friends")}
-        className={`w-full text-left p-3 rounded mb-2 ${
-          activeTab === "friends" ? "bg-blue-500" : "hover:bg-slate-700"
-        }`}
-      >
-        👥 Friends
-      </button>
-     
-      <button
-        onClick={logout}
-        className="w-full text-left p-3 rounded mt-10 bg-red-500 hover:bg-red-600"
-      >
-        🚪 Logout
-      </button>
+          <div>
+            <h2 className="text-xl font-bold">{userData?.name}</h2>
+
+            <p className="text-olive-500 text-sm">{userData?.email}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Menu */}
+
+      <div className="flex-1 p-5 space-y-4">
+        <button
+          onClick={() => setActiveTab("global")}
+          className={`w-full p-4 rounded-2xl transition-all duration-300 text-left ${
+            activeTab === "global"
+              ? "bg-linear-to-r from-mauve-300 to-mauve-500 shadow-xl"
+              : "hover:bg-slate-800"
+          }`}
+        >
+          🌍 Global Chat
+        </button>
+
+        <button
+          onClick={() => setActiveTab("friends")}
+          className={`w-full p-4 rounded-2xl transition-all duration-300 text-left ${
+            activeTab === "friends"
+              ? "bg-linear-to-r from-mauve-300 to-mauve-500 shadow-xl"
+              : "hover:bg-slate-800"
+          }`}
+        >
+          👥 Friends
+        </button>
+      </div>
+
+      {/* Logout */}
+
+      <div className="p-5">
+        <button
+          onClick={logout}
+          className="w-full rounded-2xl bg-slate-800 hover:bg-slate-700 p-4 transition-all"
+        >
+          🚪 Logout
+        </button>
+      </div>
     </div>
   );
 };

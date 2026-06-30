@@ -6,7 +6,15 @@ const MessageInput = ({ message, setMessage, handleMessages, username }) => {
       <input
         type="text"
         placeholder="Type a message..."
-        className="flex-1 border p-3 rounded"
+        className="
+      flex-1
+      bg-cyan-600
+      text-white
+      rounded-2xl
+      px-6
+      py-4
+      outline-none
+      "
         value={message}
         onChange={(e) => {
           setMessage(e.target.value);
@@ -17,7 +25,20 @@ const MessageInput = ({ message, setMessage, handleMessages, username }) => {
         }}
       />
 
-      <button onClick={handleMessages}>Send</button>
+      <button
+        className="
+      px-8
+      rounded-2xl
+      bg-linear-to-r
+      from-violet-600
+      to-fuchsia-600
+      text-white
+      shadow-lg
+      "
+        onClick={handleMessages}
+      >
+        Send
+      </button>
     </div>
   );
 };

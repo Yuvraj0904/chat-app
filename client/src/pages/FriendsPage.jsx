@@ -85,111 +85,135 @@ const FriendsPage = ({
     fetchFriends();
   }, []);
 
-  return (
-    <div className="min-h-screen p-6 bg-gray-100">
-      <h1 className="text-3xl font-bold mb-8">
-        {onlyRequests ? "Friend Requests" : "Friends"}
-      </h1>
+ return (
+   <div className="min-h-screen p-8 bg-[#020617] text-white">
+     <h1 className="text-4xl font-bold mb-8">
+       {onlyRequests ? "Friend Requests" : "Friends"}
+     </h1>
 
-      <div className={`${onlyRequests ? "" : "grid md:grid-cols-2 gap-8"}`}>
-        {/* Friend Requests */}
-        {(onlyRequests || !onlyRequests) && (
-          <div className="bg-white p-6 rounded-xl shadow">
-            <h2 className="text-xl font-semibold mb-4">Friend Requests</h2>
+     <div
+       className={`${onlyRequests ? "max-w-3xl" : "grid lg:grid-cols-2 gap-8"}`}
+     >
+       {/* Friend Requests */}
+       {(onlyRequests || !onlyRequests) && (
+         <div className="bg-[#111827] border border-slate-700 p-8 rounded-3xl shadow-2xl">
+           <h2 className="text-2xl font-semibold mb-6">Friend Requests</h2>
 
-            {requests.length === 0 ? (
-              <p>No friend requests</p>
-            ) : (
-              requests.map((user) => (
-                <div
-                  key={user._id}
-                  className="flex justify-between items-center border-b py-3"
-                >
-                  <div>
-                    <p className="font-medium">{user.name}</p>
-                    <p className="text-sm text-gray-500">{user.email}</p>
-                  </div>
+           {requests.length === 0 ? (
+             <p className="text-slate-400">No friend requests</p>
+           ) : (
+             requests.map((user) => (
+               <div
+                 key={user._id}
+                 className="flex justify-between items-center border-b border-slate-700 py-5"
+               >
+                 <div className="flex items-center gap-4">
+                   <div className="w-14 h-14 rounded-2xl bg-linear-to-r from-violet-500 to-fuchsia-500 flex items-center justify-center text-xl font-bold text-white">
+                     {user.name.charAt(0).toUpperCase()}
+                   </div>
 
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => handleAccept(user._id)}
-                      className="bg-green-500 text-white px-3 py-1 rounded"
-                    >
-                      Accept
-                    </button>
+                   <div>
+                     <p className="font-semibold text-lg">{user.name}</p>
 
-                    <button
-                      onClick={() => handleReject(user._id)}
-                      className="bg-red-500 text-white px-3 py-1 rounded"
-                    >
-                      Reject
-                    </button>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        )}
-        {/* Friends */}
-        {!onlyRequests && (
-          <div className="bg-white p-6 rounded-xl shadow">
-            <h2 className="text-xl font-semibold mb-4">My Friends</h2>
+                     <p className="text-slate-400 text-sm">{user.email}</p>
+                   </div>
+                 </div>
 
-            {friends.length === 0 ? (
-              <p>No friends yet</p>
-            ) : (
-              friends.map((friend) => (
-                <div
-                  key={friend._id}
-                  className="border-b py-3 flex justify-between items-center"
-                >
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-center gap-2">
-                        <span
-                          className={`w-3 h-3 rounded-full ${
-                            onlineUsers?.includes(friend._id)
-                              ? "bg-green-500"
-                              : "bg-gray-400"
-                          }`}
-                        ></span>
+                 <div className="flex gap-3">
+                   <button
+                     onClick={() => handleAccept(user._id)}
+                     className="px-5 py-2 rounded-xl bg-green-600 hover:bg-green-700 transition"
+                   >
+                     Accept
+                   </button>
 
-                        <p className="font-medium">{friend.name}</p>
+                   <button
+                     onClick={() => handleReject(user._id)}
+                     className="px-5 py-2 rounded-xl bg-red-600 hover:bg-red-700 transition"
+                   >
+                     Reject
+                   </button>
+                 </div>
+               </div>
+             ))
+           )}
+         </div>
+       )}
 
-                        {unreadMessages?.[friend._id] > 0 && (
-                          <span className="bg-red-500 text-white rounded-full px-2 text-xs">
-                            {unreadMessages[friend._id]}
-                          </span>
-                        )}
-                      </div>
+       {/* Friends */}
+       {!onlyRequests && (
+         <div className="bg-[#111827] border border-slate-700 p-8 rounded-3xl shadow-2xl">
+           <h2 className="text-2xl font-semibold mb-6">My Friends</h2>
 
-                    
-                    </div>
+           {friends.length === 0 ? (
+             <p className="text-slate-400">No friends yet</p>
+           ) : (
+             friends.map((friend) => (
+               <div
+                 key={friend._id}
+                 className="flex justify-between items-center border-b border-slate-700 py-5"
+               >
+                 <div className="flex items-center gap-4">
+                   {/* Avatar */}
 
-                    <p className="text-sm text-gray-500">{friend.email}</p>
-                  </div>
+                   <div className="relative">
+                     <div className="w-14 h-14 rounded-2xl bg-linear-to-r from-violet-500 to-fuchsia-500 flex items-center justify-center text-xl font-bold text-white">
+                       {friend.name.charAt(0).toUpperCase()}
+                     </div>
 
-                  <button
-                    onClick={() => {
-                      setSelectedFriend(friend);
-                      setActiveTab("private");
+                     <span
+                       className={`absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-[#111827] ${
+                         onlineUsers?.includes(friend._id)
+                           ? "bg-green-500"
+                           : "bg-gray-500"
+                       }`}
+                     ></span>
+                   </div>
 
-                      setUnreadMessages((prev) => ({
-                        ...prev,
-                        [friend._id]: 0,
-                      }));
-                    }}
-                    className="bg-blue-500 text-white px-3 py-1 rounded"
-                  >
-                    Chat
-                  </button>
-                </div>
-              ))
-            )}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+                   {/* Info */}
+
+                   <div>
+                     <div className="flex items-center gap-2">
+                       <h3 className="font-semibold text-lg">{friend.name}</h3>
+
+                       {unreadMessages?.[friend._id] > 0 && (
+                         <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                           {unreadMessages[friend._id]}
+                         </span>
+                       )}
+                     </div>
+
+                     <p className="text-slate-400 text-sm">{friend.email}</p>
+
+                     <p className="text-sm text-slate-500">
+                       {onlineUsers?.includes(friend._id)
+                         ? "Online"
+                         : "Offline"}
+                     </p>
+                   </div>
+                 </div>
+
+                 <button
+                   onClick={() => {
+                     setSelectedFriend(friend);
+                     setActiveTab("private");
+
+                     setUnreadMessages((prev) => ({
+                       ...prev,
+                       [friend._id]: 0,
+                     }));
+                   }}
+                   className="px-6 py-3 rounded-2xl bg-linear-to-r from-violet-600 to-fuchsia-600 text-white shadow-lg hover:scale-105 transition"
+                 >
+                   Open Chat
+                 </button>
+               </div>
+             ))
+           )}
+         </div>
+       )}
+     </div>
+   </div>
+ );
 };
 export default FriendsPage;

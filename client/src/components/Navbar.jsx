@@ -51,7 +51,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full flex justify-between items-center px-6 py-4 bg-white shadow-md">
+    <nav className="w-full flex justify-between items-center   shadow-md bg-cyan-100">
       {/* Logo */}
       <h1
         onClick={() => navigate("/")}

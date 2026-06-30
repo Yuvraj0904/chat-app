@@ -150,8 +150,8 @@ const ChatPage = () => {
   if (!isLoggedin) return null;
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-blue-100 to-purple-100 flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-3xl h-175 flex flex-col">
+    <div className="h-full bg-indigo-200 p-6">
+      <div className="bg-cyan-900 rounded-3xl h-full flex flex-col border bg-blend-color-burn shadow-2xl overflow-hidden">
         {/* Header */}
         <ChatHeader username={username} />
 
@@ -172,7 +172,7 @@ const ChatPage = () => {
 
         {/* Typing Indicator */}
         {typingUser && (
-          <p className="px-4 text-sm text-gray-500 italic">
+          <p className="px-4 text-sm text-blue-900 italic">
             {typingUser} is typing...
           </p>
         )}
