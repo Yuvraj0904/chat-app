@@ -7,6 +7,7 @@ import ResetPassword from "./pages/ResetPassword";
 import ChatPage from "./pages/ChatPage";
 import FriendsPage from "./pages/FriendsPage";
 import PrivateChatPage from "./pages/PrivateChatPage";
+import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -21,10 +22,10 @@ function App() {
 
         {/* Protected Route */}
         <Route
-          path="/chat"
+          path="/dashboard"
           element={
             <ProtectedRoute>
-              <ChatPage />
+              <Dashboard />
             </ProtectedRoute>
           }
         />

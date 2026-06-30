@@ -8,7 +8,7 @@ const Header = () => {
   const navigate = useNavigate();
   const handleGetStarted = () => {
     if (isLoggedin) {
-      navigate("/chat");
+     navigate("/dashboard");
     } else {
       navigate("/login");
     }

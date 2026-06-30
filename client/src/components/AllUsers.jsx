@@ -24,18 +24,25 @@ const AllUsers = ({ users, backendUrl }) => {
     <div className="border-b p-4">
       <h2 className="font-bold mb-2">All Users</h2>
 
-      {users.map((user) => (
-        <div key={user._id} className="flex justify-between items-center py-2">
-          <span>{user.name}</span>
-
-          <button
-            onClick={() => sendFriendRequest(user._id)}
-            className="bg-blue-500 text-white px-3 py-1 rounded"
+      {users.length === 0 ? (
+        <p>No users found</p>
+      ) : (
+        users.map((user) => (
+          <div
+            key={user._id}
+            className="flex justify-between items-center py-2"
           >
-            Add Friend
-          </button>
-        </div>
-      ))}
+            <span>{user.name}</span>
+
+            <button
+              onClick={() => sendFriendRequest(user._id)}
+              className="bg-blue-500 text-white px-3 py-1 rounded"
+            >
+              Add Friend
+            </button>
+          </div>
+        ))
+      )}
     </div>
   );
 };

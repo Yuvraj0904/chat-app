@@ -7,7 +7,7 @@ export const getUserData = async (req, res) => {
     if (!user) {
       return res.json({ success: false, message: "user not found" });
     }
-    
+
     return res.json({
       success: true,
       userData: {
@@ -20,20 +20,30 @@ export const getUserData = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
-export const getAllUsers=async(req,res)=>{
+export const getAllUsers = async (req, res) => {
   try {
+    console.log("req.userId =", req.userId);
+
     const currentUserId = req.userId;
-    const users = await User.find({
-      _id: { $ne: currentUserId },
-    }).select("-password");
-    if(!user){
-       return res.json({ success: false, message: "users not found" });
-    }
-       return res.json({
-         success: true,
-         users,
-       });
+
+    const users = await userModel
+      .find({
+        _id: { $ne: currentUserId },
+      })
+      .select("-password");
+
+    console.log("Users found:", users);
+
+    return res.json({
+      success: true,
+      users,
+    });
   } catch (error) {
-    res.json({ success: false, message: error.message });
+    console.log(error);
+
+    return res.json({
+      success: false,
+      message: error.message,
+    });
   }
-}
+};

@@ -3,9 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { AppContext } from "../context/AppContext";
 import { socket } from "../services/socket";
-
-const PrivateChatPage = () => {
-  const { friendId } = useParams();
+const PrivateChatPage = ({ friendId }) => {
   const { backendUrl, userData } = useContext(AppContext);
 
   const [messages, setMessages] = useState([]);

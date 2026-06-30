@@ -59,8 +59,7 @@ const EmailVerify = () => {
         toast.success(data.message);
 
         await getUserData();
-
-        navigate("/chat");
+navigate("/dashboard");
       } else {
         toast.error(data.message);
       }
@@ -72,7 +71,7 @@ const EmailVerify = () => {
   // Redirect if already verified
   useEffect(() => {
     if (isLoggedin && userData && userData.isAccountVerified) {
-      navigate("/chat");
+   navigate("/dashboard");
     }
   }, [isLoggedin, userData, navigate]);
 

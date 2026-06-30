@@ -36,8 +36,7 @@ const Login = () => {
           await getUserData();
 
           toast.success("Account created successfully");
-
-          navigate("/chat");
+navigate("/dashboard");
         } else {
           toast.error(data.message);
         }
@@ -56,8 +55,7 @@ const Login = () => {
           await getUserData();
 
           toast.success("Logged in successfully");
-
-          navigate("/chat");
+navigate("/dashboard");
         } else {
           toast.error(data.message);
         }

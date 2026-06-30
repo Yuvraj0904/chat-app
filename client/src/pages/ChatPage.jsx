@@ -133,7 +133,9 @@ const ChatPage = () => {
   }, []);
   const fetchAllUsers = async () => {
     try {
-      const response = await api.get("/user/all-users");
+    const response = await api.get("/api/user/all-users", {
+      withCredentials: true,
+    });
 
       if (response.data.success) {
         setAllUsers(response.data.users);
