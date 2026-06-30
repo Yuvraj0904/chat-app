@@ -80,6 +80,26 @@ const FriendsPage = ({
       toast.error(error.message);
     }
   };
+  const handleRemoveFriend = async (friendId) => {
+    try {
+      const { data } = await axios.post(
+        `${backendUrl}/api/friends/remove-friend/${friendId}`,
+        {},
+        { withCredentials: true },
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+
+        // Refresh friends list
+        fetchFriends();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   useEffect(() => {
     fetchFriendRequests();
     fetchFriends();
@@ -193,20 +213,29 @@ const FriendsPage = ({
                    </div>
                  </div>
 
-                 <button
-                   onClick={() => {
-                     setSelectedFriend(friend);
-                     setActiveTab("private");
+                 <div className="flex gap-3">
+                   <button
+                     onClick={() => {
+                       setSelectedFriend(friend);
+                       setActiveTab("private");
 
-                     setUnreadMessages((prev) => ({
-                       ...prev,
-                       [friend._id]: 0,
-                     }));
-                   }}
-                   className="px-6 py-3 rounded-2xl bg-linear-to-r from-violet-600 to-fuchsia-600 text-white shadow-lg hover:scale-105 transition"
-                 >
-                   Open Chat
-                 </button>
+                       setUnreadMessages((prev) => ({
+                         ...prev,
+                         [friend._id]: 0,
+                       }));
+                     }}
+                     className="px-6 py-3 rounded-2xl bg-linear-to-r from-violet-600 to-fuchsia-600 text-white shadow-lg hover:scale-105 transition"
+                   >
+                     Chat
+                   </button>
+
+                   <button
+                     onClick={() => handleRemoveFriend(friend._id)}
+                     className="px-6 py-3 rounded-2xl bg-red-600 hover:bg-red-700 text-white shadow-lg transition"
+                   >
+                     Remove
+                   </button>
+                 </div>
                </div>
              ))
            )}

@@ -1,10 +1,12 @@
 import userModel from "../models/userModel.js";
 
+// Send Friend Request
 export const sendFriendRequest = async (req, res) => {
   try {
     const senderId = req.userId;
     const receiverId = req.params.id;
 
+    // Cannot send request to yourself
     if (senderId === receiverId) {
       return res.json({
         success: false,
@@ -14,18 +16,24 @@ export const sendFriendRequest = async (req, res) => {
 
     const sender = await userModel.findById(senderId);
     const receiver = await userModel.findById(receiverId);
+
+    // Receiver not found
     if (!receiver) {
       return res.json({
         success: false,
-        message: "You cannot send a friend request to yourself",
+        message: "User not found",
       });
     }
+
+    // Already friends
     if (sender.friends.includes(receiverId)) {
       return res.json({
         success: false,
         message: "Already friends",
       });
     }
+
+    // Request already sent
     if (receiver.friendRequests.includes(senderId)) {
       return res.json({
         success: false,
@@ -33,8 +41,17 @@ export const sendFriendRequest = async (req, res) => {
       });
     }
 
+    // Receiver has already sent you a request
+    if (sender.friendRequests.includes(receiverId)) {
+      return res.json({
+        success: false,
+        message: "This user has already sent you a request",
+      });
+    }
+
     receiver.friendRequests.push(senderId);
     await receiver.save();
+
     return res.json({
       success: true,
       message: "Friend request sent",
@@ -46,11 +63,12 @@ export const sendFriendRequest = async (req, res) => {
     });
   }
 };
+
 // Accept Friend Request
 export const acceptFriendRequest = async (req, res) => {
   try {
-    const currentUserId = req.userId; // logged in user
-    const senderId = req.params.id; // user who sent request
+    const currentUserId = req.userId;
+    const senderId = req.params.id;
 
     const currentUser = await userModel.findById(currentUserId);
     const sender = await userModel.findById(senderId);
@@ -70,17 +88,21 @@ export const acceptFriendRequest = async (req, res) => {
       });
     }
 
-    // Add both users as friends
-    currentUser.friends.push(senderId);
-    sender.friends.push(currentUserId);
-
     // Remove request
     currentUser.friendRequests = currentUser.friendRequests.filter(
       (id) => id.toString() !== senderId,
     );
 
     await currentUser.save();
-    await sender.save();
+
+    // Add friends without duplicates
+    await userModel.findByIdAndUpdate(currentUserId, {
+      $addToSet: { friends: senderId },
+    });
+
+    await userModel.findByIdAndUpdate(senderId, {
+      $addToSet: { friends: currentUserId },
+    });
 
     return res.json({
       success: true,
@@ -93,6 +115,50 @@ export const acceptFriendRequest = async (req, res) => {
     });
   }
 };
+
+// Reject Friend Request
+export const rejectFriendRequest = async (req, res) => {
+  try {
+    const currentUserId = req.userId;
+    const senderId = req.params.id;
+
+    const currentUser = await userModel.findById(currentUserId);
+
+    if (!currentUser) {
+      return res.json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Check if request exists
+    if (!currentUser.friendRequests.includes(senderId)) {
+      return res.json({
+        success: false,
+        message: "No friend request found",
+      });
+    }
+
+    // Remove request
+    currentUser.friendRequests = currentUser.friendRequests.filter(
+      (id) => id.toString() !== senderId,
+    );
+
+    await currentUser.save();
+
+    return res.json({
+      success: true,
+      message: "Friend request rejected",
+    });
+  } catch (error) {
+    return res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// Get All Friend Requests
 export const allFriendRequest = async (req, res) => {
   try {
     const currentUserId = req.userId;
@@ -119,6 +185,8 @@ export const allFriendRequest = async (req, res) => {
     });
   }
 };
+
+// Get All Friends
 export const allFriends = async (req, res) => {
   try {
     const userId = req.userId;
@@ -145,41 +213,27 @@ export const allFriends = async (req, res) => {
     });
   }
 };
-export const rejectFriendRequest=async(req,res)=>{
- try {
-   const currentUserId = req.userId;
-   const senderId = req.params.id;
+export const removeFriend = async (req, res) => {
+  try {
+    const currentUserId = req.userId;
+    const friendId = req.params.id;
 
-   const currentUser = await User.findById(currentUserId);
+    await userModel.findByIdAndUpdate(currentUserId, {
+      $pull: { friends: friendId },
+    });
 
-   if (!currentUser) {
-     return res.json({
-       success: false,
-       message: "User not found",
-     });
-   }
-   // Check if request exists
-   if (!currentUser.friendRequests.includes(senderId)) {
-     return res.json({
-       success: false,
-       message: "No friend request found",
-     });
-   }
-   // Remove request
-   currentUser.friendRequests = currentUser.friendRequests.filter(
-     (id) => id.toString() !== senderId,
-   );
-    await currentUser.save();
+    await userModel.findByIdAndUpdate(friendId, {
+      $pull: { friends: currentUserId },
+    });
 
     return res.json({
       success: true,
-      message: "Friend request rejected",
+      message: "Friend removed successfully",
     });
-
- } catch (error) {
+  } catch (error) {
     return res.json({
       success: false,
       message: error.message,
     });
- }
-}
+  }
+};
