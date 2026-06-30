@@ -32,7 +32,10 @@ const socketHandler = (io) => {
           time: new Date().toLocaleTimeString(),
         });
       } catch (error) {
-        console.log(error.message);
+        res.json({
+          success:false,
+          message:error.message
+        })
       }
     });
 
@@ -43,8 +46,6 @@ const socketHandler = (io) => {
 
       // Send online user IDs
       io.emit("private_online_users", Object.keys(onlineUsers));
-
-      console.log("Online Users:", onlineUsers);
     });
 
     socket.on("send_friend_notification", (data) => {
@@ -77,7 +78,10 @@ const socketHandler = (io) => {
           });
         }
       } catch (error) {
-        console.log(error.message);
+     res.json({
+       success: false,
+       message: error.message,
+     });
       }
     });
 

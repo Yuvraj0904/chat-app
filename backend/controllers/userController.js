@@ -22,7 +22,6 @@ export const getUserData = async (req, res) => {
 };
 export const getAllUsers = async (req, res) => {
   try {
-    console.log("req.userId =", req.userId);
 
     const currentUserId = req.userId;
 
@@ -32,15 +31,11 @@ export const getAllUsers = async (req, res) => {
       })
       .select("-password");
 
-    console.log("Users found:", users);
-
     return res.json({
       success: true,
       users,
     });
   } catch (error) {
-    console.log(error);
-
     return res.json({
       success: false,
       message: error.message,
